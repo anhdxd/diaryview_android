@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screen/otp.dart';
 import 'package:flutter_app/utils.dart';
+import 'package:flutter/services.dart';
 
 class PhoneInputPage extends StatefulWidget {
   const PhoneInputPage({Key? key}) : super(key: key);
@@ -57,6 +58,9 @@ class _PhoneInputPageState extends State<PhoneInputPage> {
                   //Do something with the user input.
                 },
                 keyboardType: TextInputType.phone,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
                 decoration: const InputDecoration(
                   hintText: 'Mobile',
                 ),
@@ -76,7 +80,6 @@ class _PhoneInputPageState extends State<PhoneInputPage> {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return OtpPage(phoneNumber: phone);
         }));
-
       },
       child: Center(
         child: Container(
