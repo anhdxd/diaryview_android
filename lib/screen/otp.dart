@@ -33,7 +33,8 @@ class _OtpPageState extends State<OtpPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nhập OTP'),
-        titleTextStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        titleTextStyle:
+            const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),

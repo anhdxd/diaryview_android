@@ -74,7 +74,7 @@ class _PwdCreatePageState extends State<PwdCreatePage> {
       onTap: () {
         // Get json data from data.dat
         final pwd = inputController.text;
-        if (pwd.isNotEmpty) {
+        if (pwd.isNotEmpty && pwd.length >= 6) {
           // Save password to file
           addIniFile('pwd', inputController.text);
           showDialog(
@@ -105,7 +105,8 @@ class _PwdCreatePageState extends State<PwdCreatePage> {
             context: context,
             builder: (context) => AlertDialog(
               title: const Text('Nhập mật khẩu lần đầu'),
-              content: const Text('Password không được để trống'),
+              content: const Text(
+                  'Password không được để trống và phải từ 6 ký tự trở lên'),
               actions: [
                 TextButton(
                   onPressed: () {

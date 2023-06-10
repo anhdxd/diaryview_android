@@ -12,6 +12,7 @@ class PhoneInputPage extends StatefulWidget {
 
 class _PhoneInputPageState extends State<PhoneInputPage> {
   final inputController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var heightSize = MediaQuery.of(context).size.height;
@@ -76,6 +77,25 @@ class _PhoneInputPageState extends State<PhoneInputPage> {
     return GestureDetector(
       onTap: () {
         String phone = inputController.text;
+        if (phone.length < 10) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Thông báo'),
+              content:
+                  const Text('Số điện thoại không hợp lệ. Vui lòng nhập lại!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+          return;
+        }
         verifyPhoneNumber(phone);
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return OtpPage(phoneNumber: phone);

@@ -21,6 +21,12 @@ class _ToDoScreenState extends State<ToDoScreen> {
     String phone = await getIniFile('phone');
     String token = '';
     final diary = await getDiaryFromServer(phone, token);
+    if (diary == "") {
+      setState(() {
+        textNoData = "Không có dữ liệu";
+      });
+      return;
+    }
     final lst = json.decode(diary);
 
     final List<String> lstName = [];
@@ -72,12 +78,16 @@ class _ToDoScreenState extends State<ToDoScreen> {
                         leading: const Icon(Icons.web),
                         subtitle: Text(item),
                         trailing: IconButton(
-                          icon: const Icon(Icons.delete),
+                          icon: const Icon(Icons.description_rounded),
                           color: const Color.fromARGB(255, 255, 255, 255),
                           onPressed: () {
-                            setState(() {
-                              _deleteItem(index);
-                            });
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Detail(
+                                    item: item, detail: detail_item[index]),
+                              ),
+                            );
                           },
                         ),
                         onTap: () {
@@ -101,6 +111,10 @@ class _ToDoScreenState extends State<ToDoScreen> {
   }
 
   void _deleteItem(int index) {
+    _itemList.removeAt(index);
+  }
+
+  void _deleteAllItem(int index) {
     _itemList.removeAt(index);
   }
 

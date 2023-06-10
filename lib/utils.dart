@@ -50,6 +50,17 @@ Future<void> verifyPhoneNumber(phone) async {
   print(response.body);
 }
 
+// post json to /delete_all_diary
+Future<void> deleteAllDiary() async {
+  final url = Uri.parse('$ipServer/delete_all_diary');
+  final token = await getIniFile("token");
+  final phone = await getIniFile("phone");
+  final response = await http.post(url,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'token': token, 'phone': phone}));
+  print(response.body);
+}
+
 // post json (phone, otp) to /verify_otp
 Future<bool> verifyOTP(phone, otp) async {
   final url = Uri.parse('$ipServer/verify_otp');
@@ -80,17 +91,23 @@ Future<String> getDiaryFromServer(String phone, String inToken) async {
   final response = await http.post(url,
       headers: {'Content-Type': 'application/json'},
       body: json.encode({'phone': phone, 'token': token}));
+
   //print(response.body);
+  if (response.body == "") {
+    return "";
+  }
+  // Data parse
+  var jsonData = json.decode(response.body)['data'];
+  if (jsonData == "" || jsonData == null) {
+    return "";
+  }
+  var aesKeyEnc = json.decode(jsonData.toString())['aes'];
+  var dataEnc = json.decode(jsonData.toString())['data_enc'];
 
   // decrypt rsa-2048, read key in path app privatekey.txt
   final fpath = await getApplicationDocumentsDirectory();
   final file = File('${fpath.path}/privatekey.txt');
   final privateKey = file.readAsStringSync();
-
-  // Data parse
-  var jsonData = json.decode(response.body)['data'];
-  var aesKeyEnc = json.decode(jsonData.toString())['aes'];
-  var dataEnc = json.decode(jsonData.toString())['data_enc'];
 
   // decrypt with RSA
 

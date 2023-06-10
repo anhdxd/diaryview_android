@@ -231,7 +231,6 @@ class SettingsScreen extends StatelessWidget {
                             Navigator.pop(context);
                             addIniFile("pwd", "");
                             addIniFile("otpverify", "0");
-                            
 
                             Navigator.pushAndRemoveUntil(
                                 context,
@@ -256,19 +255,43 @@ class SettingsScreen extends StatelessWidget {
             } else if (index == 1) {
               return ListTile(
                 leading: const Icon(
-                  Icons.password_outlined,
+                  Icons.restore_from_trash,
                   size: 30,
                 ), // Biểu tượng đăng xuất
-                title: const Text('Đổi mật khẩu',
+                title: const Text('Xóa dữ liệu nhật ký',
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
                         color: Color.fromARGB(255, 58, 61, 62))),
                 onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Thông báo'),
+                      content: const Text('Bạn có muốn xóa toàn bộ dữ liệu ?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            deleteAllDiary();
+                          },
+                          child: const Text('OK'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Cancel'),
+                        )
+                      ],
+                    ),
+                  );
+
                   // Điều hướng đến màn hình Đăng xuất
                 },
               );
             }
+            return null;
           }),
     );
   }
